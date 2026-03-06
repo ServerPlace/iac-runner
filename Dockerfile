@@ -23,6 +23,10 @@ RUN make build
 
 FROM ubuntu:22.04
 
+LABEL org.opencontainers.image.source=http://github.com/ServerPlace/iac-runner
+LABEL org.opencontainers.image.description="IaC Runner"
+LABEL org.opencontainers.image.licenses=GPL V3
+
 ENV DEBIAN_FRONTEND=noninteractive
 
 # =========================
