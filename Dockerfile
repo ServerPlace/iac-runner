@@ -14,10 +14,10 @@ WORKDIR /build
 ARG CACHEBUST=1
 COPY . .
 # 5. Baixe dependências e faça o Build
-RUN git config --global url."git@github.com:".insteadOf "https://github.com/"
-RUN --mount=type=ssh \
-    go env -w GOPRIVATE='github.com/ServerPlace/*' && \
-    go mod download
+#@RUN git config --global url."git@github.com:".insteadOf "https://github.com/"
+#RUN --mount=type=ssh \
+#    go env -w GOPRIVATE='github.com/ServerPlace/*' && \
+RUN go mod download
 RUN make build
 
 
@@ -25,7 +25,7 @@ FROM ubuntu:22.04
 
 LABEL org.opencontainers.image.source=http://github.com/ServerPlace/iac-runner
 LABEL org.opencontainers.image.description="IaC Runner"
-LABEL org.opencontainers.image.licenses=GPL V3
+LABEL org.opencontainers.image.licenses="GPL V3"
 
 ENV DEBIAN_FRONTEND=noninteractive
 
