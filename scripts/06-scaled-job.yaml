@@ -1,0 +1,64 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledJob
+metadata:
+  name: azure-pipe-devops-agent-plan
+  namespace: azure-pipe-devops
+spec:
+  failedJobsHistoryLimit: 3
+  jobTargetRef:
+    template:
+      spec:
+        containers:
+        - env:
+          - name: AZP_URL
+            valueFrom:
+              secretKeyRef:
+                key: AZP_URL
+                name: azure-pipe-devops-keda
+          - name: AZP_TOKEN
+            valueFrom:
+              secretKeyRef:
+                key: AZP_PAT
+                name: azure-pipe-devops-keda
+          - name: AZP_POOL
+            value: kubernetes-plan
+          - name: TERRAFORM_BIN
+            value: /usr/local/bin/terraform
+          - name: TERRAGRUNT_BIN
+            value: /usr/local/bin/terragrunt
+          - name: AZP_AGENT_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: TF_PLUGIN_CACHE_DIR
+            value: /tmp/terragrunt.d/modules
+          - name: BASE_BRANCH
+            value: origin/master
+          - name: LOG_LEVEL
+            value: debug
+          - name: CONTROLLER_URL
+            value: <CONTROLLER_URL>
+          - name: FEATURES_SECURITY_SCAN
+            value: "true"
+          - name: FEATURES_SECURITY_SCANNER
+            value: trivy
+          - name: FEATURES_TRIVY_BIN
+            value: /usr/bin/trivy
+          - name: FEATURES_PLAN_REGISTRATION
+            value: "true"
+          - name: COMPLIANCE_REGISTRY_URI
+            value: <STORAGE_URI>/blueprints/latest.json
+          - name: MODULE_REGISTRY_ROOT
+            value: <URL_TERRAFORM_MODULES>
+          image: <PRIVATE_REPOSITORY_DOCKER:TAG>
+          imagePullPolicy: Always
+          name: agent
+        serviceAccount: <KSA_NAME>
+  triggers:
+  - authenticationRef:
+      name: azure-pipe-devops-trigger-auth
+    metadata:
+      organizationURL: <URL_ORGANIZATION_AZURE>
+      poolID: <POOL_ID_AZURE_AGENTES>
+      targetPipelinesQueueLength: <QUEUE_LENGTH>
+    type: azure-pipelines

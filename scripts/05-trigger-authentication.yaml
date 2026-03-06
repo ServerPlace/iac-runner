@@ -1,0 +1,12 @@
+apiVersion: keda.sh/v1alpha1
+kind: TriggerAuthentication
+metadata:
+  name: azure-pipe-devops-trigger-auth
+  namespace: azure-pipe-devops
+spec:
+  secretTargetRef:
+  - key: AZP_PAT
+    name: azure-pipe-devops-keda
+    parameter: personalAccessToken
+status:
+  scaledjobs: azure-pipe-devops-agent-plan
