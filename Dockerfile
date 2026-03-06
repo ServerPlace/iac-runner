@@ -21,7 +21,7 @@ RUN go mod download
 RUN make build
 
 
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 LABEL org.opencontainers.image.source=http://github.com/ServerPlace/iac-runner
 LABEL org.opencontainers.image.description="IaC Runner"
@@ -121,7 +121,7 @@ RUN curl -fsSL https://download.agent.dev.azure.com/agent/${AZP_AGENT_VERSION}/v
   | tar zx
 
 RUN apt-get update && apt-get install -y \
-    libicu70 \
+    libicu74 \
     libssl3 \
     libkrb5-3 \
     zlib1g \
