@@ -51,7 +51,7 @@ spec:
           - name: MODULE_REGISTRY_ROOT
             value: <URL_TERRAFORM_MODULES>
           image: <PRIVATE_REPOSITORY_DOCKER:TAG>
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           name: agent
         serviceAccount: <KSA_NAME>
   triggers:
